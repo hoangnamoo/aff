@@ -10,14 +10,13 @@ exports.getLinkShopee = catchAsync(async (req, res, next) => {
         urls: [req.body.link],
         utm_source: 'user_id',
         utm_campaign: 'shopee',
-        utm_content: 'catalogId',
     });
 
     if (data.data.error_link.length > 0)
         return next(new AppError('Link không hợp lệ', 400));
 
     const productInfo = await getShopeeProduct(
-        data.data.success_link[0].url_origin
+        data.data.success_link[0].short_link
     );
 
     res.status(200).json({
@@ -27,4 +26,10 @@ exports.getLinkShopee = catchAsync(async (req, res, next) => {
             productInfo,
         },
     });
+});
+
+exports.updateShopeeCommission = catchAsync(async (req, res, next) => {
+    console.log('OK');
+
+    res.status(200).json('OK');
 });

@@ -15,6 +15,10 @@ const accessTradeApi = {
         const baseURL = 'product_link/create';
         return accessTradeAxios.post(baseURL, data);
     },
+    getCampCommission: (data) => {
+        const baseURL = `https://api.accesstrade.vn/v1/commission_policies?camp_id=${data.campId}&month=${data.month}`;
+        return accessTradeAxios.get(baseURL);
+    },
 };
 
 module.exports = accessTradeApi;
