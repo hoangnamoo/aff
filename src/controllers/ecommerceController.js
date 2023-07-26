@@ -4,7 +4,7 @@ const catchAsync = require('../utils/catchAsync');
 const getShopeeProduct = require('../utils/shopee');
 
 exports.getLinkShopee = catchAsync(async (req, res, next) => {
-    //req.body.link
+    //req.body.link req.body.campId
     const { data } = await accessTradeApi.getLinkAff({
         campaign_id: '4751584435713464237',
         urls: [req.body.link],

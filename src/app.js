@@ -6,6 +6,7 @@ require('dotenv').config();
 
 const ecommerceRouter = require('./routes/ecommerceRouter');
 const commissionRouter = require('./routes/commissionRouter');
+const transactionRouter = require('./routes/transactionRoute');
 const AppError = require('./utils/AppError');
 
 const app = express();
@@ -19,6 +20,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/api/v1/ecommerce', ecommerceRouter);
 app.use('/api/v1/commission', commissionRouter);
+app.use('/api/v1/transaction', transactionRouter);
 
 app.use('*', (req, res, next) => {
     next(new AppError(`Can not found ${req.originalUrl}`, 404));

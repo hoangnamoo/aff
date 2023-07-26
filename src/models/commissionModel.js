@@ -4,7 +4,14 @@ const DB = require('../configs/dbConfig');
 module.exports = DB.define(
     'commissions',
     {
-        platform: {
+        camp_id: {
+            type: DataTypes.STRING,
+            references: {
+                model: 'campaigns',
+                key: 'camp_id',
+            },
+        },
+        merchant: {
             type: DataTypes.STRING,
             allowNull: false,
         },
@@ -12,24 +19,23 @@ module.exports = DB.define(
             type: DataTypes.STRING,
             allowNull: false,
         },
-        category_name: {
+        product_category: {
             type: DataTypes.STRING,
             allowNull: false,
         },
         customer_type: {
             type: DataTypes.STRING,
         },
-        user_fixed_com: {
-            type: DataTypes.DECIMAL(10, 3),
+        user_ratio: {
+            type: DataTypes.DECIMAL(8, 2),
             defaultValue: 0,
         },
-        user_bunus_com: {
-            type: DataTypes.DECIMAL(10, 3),
+        real_ratio: {
+            type: DataTypes.DECIMAL(8, 2),
             defaultValue: 0,
         },
         max_com: {
             type: DataTypes.INTEGER,
-            defaultValue: null,
         },
         updated_at: {
             type: DataTypes.DATE,

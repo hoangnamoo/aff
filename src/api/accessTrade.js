@@ -1,4 +1,5 @@
 const axios = require('axios');
+const { formatISO } = require('date-fns');
 
 const baseURL = process.env.AT_URL;
 
@@ -16,7 +17,13 @@ const accessTradeApi = {
         return accessTradeAxios.post(baseURL, data);
     },
     getCampCommission: (data) => {
-        const baseURL = `https://api.accesstrade.vn/v1/commission_policies?camp_id=${data.campId}&month=${data.month}`;
+        const baseURL = `commission_policies?camp_id=${data.campId}&month=${data.month}`;
+        return accessTradeAxios.get(baseURL);
+    },
+    getTransaction: (data) => {
+        const baseURL = `transactions?since=${formatISO(
+            data.startDate
+        )}&until=${formatISO(data.endDate)}`;
         return accessTradeAxios.get(baseURL);
     },
 };

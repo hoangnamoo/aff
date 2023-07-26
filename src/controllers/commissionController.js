@@ -5,6 +5,8 @@ const accessTradeApi = require('../api/accessTrade');
 
 exports.createCommistion = catchAsync(async (req, res, next) => {
     //input req.body.platform
+
+    //Manual create commission
     const newCom = await Commission.bulkCreate(req.body.commissionList);
 
     res.status(200).json({
@@ -16,10 +18,7 @@ exports.createCommistion = catchAsync(async (req, res, next) => {
 exports.updateCommission = catchAsync(async (req, res, next) => {
     //input req.body.campId
     const { campId } = req.body;
-
     const thisMonth = format(new Date(), 'MM-yyyy');
-    console.log(thisMonth);
-
     const campInfo = await accessTradeApi.getCampCommission({
         campId,
         month: thisMonth,
@@ -31,20 +30,19 @@ exports.updateCommission = catchAsync(async (req, res, next) => {
         allCOM.map((el) => {
             const dataUpdate = campInfo.data.category.find(
                 (el2) =>
-                    el2.category_id === el.category_name &&
+                    el2.category_id === el.product_category &&
                     el2.customer_type === el.customer_type
             );
 
             return el.update({
-                user_fixed_com: dataUpdate?.sales_ratio || 0,
+                user_ratio: dataUpdate?.sales_ratio || 0,
+                real_ratio: dataUpdate?.sales_ratio || 0,
             });
         })
     );
 
-    const newCom = await Commission.findAll();
-
     res.status(200).json({
         status: 'success',
-        data: newCom,
+        data: comUpdate,
     });
 });
