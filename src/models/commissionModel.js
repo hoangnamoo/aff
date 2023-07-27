@@ -18,6 +18,7 @@ module.exports = DB.define(
         category_id: {
             type: DataTypes.STRING,
             allowNull: false,
+            unique: 'unique_category_id_customer_type',
         },
         product_category: {
             type: DataTypes.STRING,
@@ -25,13 +26,14 @@ module.exports = DB.define(
         },
         customer_type: {
             type: DataTypes.STRING,
+            unique: 'unique_category_id_customer_type',
         },
         user_ratio: {
-            type: DataTypes.DECIMAL(8, 2),
+            type: DataTypes.DECIMAL(8, 3),
             defaultValue: 0,
         },
         real_ratio: {
-            type: DataTypes.DECIMAL(8, 2),
+            type: DataTypes.DECIMAL(8, 3),
             defaultValue: 0,
         },
         max_com: {

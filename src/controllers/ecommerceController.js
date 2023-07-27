@@ -1,29 +1,65 @@
+const { default: axios } = require('axios');
 const accessTradeApi = require('../api/accessTrade');
 const AppError = require('../utils/AppError');
 const catchAsync = require('../utils/catchAsync');
 const getShopeeProduct = require('../utils/shopee');
+const { Campaign, Commission } = require('../models');
 
 exports.getLinkShopee = catchAsync(async (req, res, next) => {
     //req.body.link req.body.campId
+
+    //1, check URL
+    const campSupportedLink = await Campaign.findAll({
+        where: {
+            camp_type: 'e-commerce',
+        },
+    });
+    const response = await axios.get(req.body.link, { maxRedirects: 3 });
+    const finalUrl = response.request.res.responseUrl;
+    let campaign = campSupportedLink.find((el) => finalUrl.includes(el.name));
+    if (!campaign)
+        return next(
+            new AppError(
+                `Link không hợp lệ, các link hỗ trợ: ${campSupportedLink
+                    .map((el) => el.name)
+                    .join(' | ')}`,
+                400
+            )
+        );
+
+    //2, Create Aff Link
     const { data } = await accessTradeApi.getLinkAff({
-        campaign_id: '4751584435713464237',
+        campaign_id: campaign.camp_id,
         urls: [req.body.link],
         utm_source: 'user_id',
         utm_campaign: 'shopee',
     });
 
     if (data.data.error_link.length > 0)
-        return next(new AppError('Link không hợp lệ', 400));
+        return next(new AppError(`Link không được hỗ trợ`, 400));
 
+    //3, Get Product Info
     const productInfo = await getShopeeProduct(
         data.data.success_link[0].short_link
     );
+
+    let user_ratio;
+    if (productInfo) {
+        if (campaign.name === 'shopee') {
+            const comission = await Commission.findAll({
+                where: { category_id: productInfo.item.cat_id },
+            });
+
+            user_ratio = comission;
+        }
+    }
 
     res.status(200).json({
         status: 'sucess',
         data: {
             aff_link: data.data.success_link[0],
             productInfo,
+            user_ratio,
         },
     });
 });

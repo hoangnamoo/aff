@@ -6,6 +6,6 @@ const router = express.Router();
 router
     .route('/')
     .post(commissionController.createCommistion)
-    .patch(commissionController.updateCommission);
+    .patch(commissionController.manualUpdateCommission);
 
 module.exports = router;

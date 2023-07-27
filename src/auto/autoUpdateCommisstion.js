@@ -1,20 +1,8 @@
 const { format } = require('date-fns');
 const { Commission, Campaign } = require('../models');
-const catchAsync = require('../utils/catchAsync');
 const accessTradeApi = require('../api/accessTrade');
 
-exports.createCommistion = catchAsync(async (req, res, next) => {
-    //Manual create commission
-
-    const newCom = await Commission.bulkCreate(req.body.commissionList);
-
-    res.status(200).json({
-        status: 'success',
-        data: newCom,
-    });
-});
-
-exports.manualUpdateCommission = catchAsync(async (req, res, next) => {
+const autoUpdateCommission = async () => {
     const allCampaign = await Campaign.findAll();
     const allCOM = await Commission.findAll();
     const thisMonth = format(new Date(), 'MM-yyyy');
@@ -35,7 +23,7 @@ exports.manualUpdateCommission = catchAsync(async (req, res, next) => {
         return acc.concat(cur);
     }, []);
 
-    const comUpdate = await Promise.all(
+    await Promise.all(
         allCOM.map((el) => {
             const dataUpdate = allCamCom.find(
                 (el2) =>
@@ -51,8 +39,7 @@ exports.manualUpdateCommission = catchAsync(async (req, res, next) => {
         })
     );
 
-    res.status(200).json({
-        status: 'success',
-        data: comUpdate,
-    });
-});
+    console.log('update success');
+};
+
+module.exports = autoUpdateCommission;

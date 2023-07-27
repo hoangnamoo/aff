@@ -11,7 +11,7 @@ const Campaign = campaignModel;
 Transaction.belongsTo(Campaign, { foreignKey: 'camp_id' });
 Campaign.hasMany(Transaction);
 
-DB.sync({ force: true, alter: true });
+DB.sync({ force: false, alter: true });
 
 module.exports = {
     Commission,
