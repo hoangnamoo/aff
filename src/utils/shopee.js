@@ -38,4 +38,4 @@ const getShopeeProduct = async (url) => {
 
 // getShopeeProduct('https://shp.ee/sdi2hby');
 
-module.exports = getShopeeProduct;
+// module.exports = getShopeeProduct;

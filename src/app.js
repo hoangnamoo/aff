@@ -8,6 +8,8 @@ const ecommerceRouter = require('./routes/ecommerceRouter');
 const commissionRouter = require('./routes/commissionRouter');
 const transactionRouter = require('./routes/transactionRoute');
 const campaignRouter = require('./routes/campaignRoute');
+const conversionRouter = require('./routes/conversionRoute');
+const generatorRouter = require('./routes/generatorRoute');
 const AppError = require('./utils/AppError');
 
 const app = express();
@@ -23,6 +25,8 @@ app.use('/api/v1/ecommerce', ecommerceRouter);
 app.use('/api/v1/commission', commissionRouter);
 app.use('/api/v1/transaction', transactionRouter);
 app.use('/api/v1/campaign', campaignRouter);
+app.use('/api/v1/conversion', conversionRouter);
+app.use('/api/v1/generator', generatorRouter);
 
 app.use('*', (req, res, next) => {
     next(new AppError(`Can not found ${req.originalUrl}`, 404));

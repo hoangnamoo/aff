@@ -10,9 +10,9 @@ DB.authenticate().then(() => {
     console.log('DB connected');
 });
 
-const job = schedule.scheduleJob('*/30 * * * * *', () => {
-    autoUpdateCommission();
-});
+// const job = schedule.scheduleJob('*/30 * * * * *', () => {
+//     autoUpdateCommission();
+// });
 
 app.listen(PORT, () => {
     console.log(`Listening on port ${PORT}`);

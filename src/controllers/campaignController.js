@@ -1,5 +1,4 @@
 const { Campaign } = require('../models');
-const AppError = require('../utils/AppError');
 const catchAsync = require('../utils/catchAsync');
 
 exports.newCampaign = catchAsync(async (req, res, next) => {

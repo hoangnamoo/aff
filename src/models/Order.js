@@ -2,22 +2,17 @@ const { DataTypes } = require('sequelize');
 const DB = require('../configs/dbConfig');
 
 module.exports = DB.define(
-    'campaigns',
+    'Orders',
     {
-        camp_id: {
+        orderId: {
             type: DataTypes.STRING,
+            allowNull: false,
             primaryKey: true,
-            unique: true,
-            allowNull: false,
         },
-        merchant: {
-            type: DataTypes.STRING,
-            allowNull: false,
-        },
-        name: {
+        orderStatus: {
             type: DataTypes.STRING,
         },
-        camp_type: {
+        shopType: {
             type: DataTypes.STRING,
         },
     },

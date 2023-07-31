@@ -4,6 +4,8 @@ const AppError = require('../utils/AppError');
 const catchAsync = require('../utils/catchAsync');
 const getShopeeProduct = require('../utils/shopee');
 const { Campaign, Commission } = require('../models');
+const getLazadaProduct = require('../utils/lazada');
+const { Op } = require('sequelize');
 
 exports.getLinkShopee = catchAsync(async (req, res, next) => {
     //req.body.link req.body.campId
@@ -32,14 +34,25 @@ exports.getLinkShopee = catchAsync(async (req, res, next) => {
         campaign_id: campaign.camp_id,
         urls: [req.body.link],
         utm_source: 'user_id',
-        utm_campaign: 'shopee',
+        utm_campaign: campaign.name,
     });
 
     if (data.data.error_link.length > 0)
         return next(new AppError(`Link không được hỗ trợ`, 400));
 
     //3, Get Product Info
-    const productInfo = await getShopeeProduct(
+    const getProductInfo = (platform) => {
+        switch (platform) {
+            case 'shopee':
+                return getShopeeProduct;
+            case 'lazada':
+                return getLazadaProduct;
+            default:
+                return null;
+        }
+    };
+
+    const productInfo = await getProductInfo(campaign.name)(
         data.data.success_link[0].short_link
     );
 
@@ -48,6 +61,20 @@ exports.getLinkShopee = catchAsync(async (req, res, next) => {
         if (campaign.name === 'shopee') {
             const comission = await Commission.findAll({
                 where: { category_id: productInfo.item.cat_id },
+            });
+
+            user_ratio = comission;
+        }
+
+        if (campaign.name === 'lazada') {
+            const comission = await Commission.findAll({
+                where: {
+                    [Op.or]: [
+                        {
+                            category_id: productInfo.category,
+                        },
+                    ],
+                },
             });
 
             user_ratio = comission;
