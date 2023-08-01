@@ -1,7 +1,7 @@
 const puppeteer = require('puppeteer-extra');
 const StealthPlugin = require('puppeteer-extra-plugin-stealth');
 
-const getShopeeProduct = async (url) => {
+const scrapeShopeeProduct = async (url) => {
     puppeteer.use(StealthPlugin());
     const requestKey = 'item_id';
     const browser = await puppeteer.launch({
@@ -27,10 +27,9 @@ const getShopeeProduct = async (url) => {
         await browser.close();
         return itemId;
     } catch (error) {
-        console.log(error);
         await browser.close();
         return null;
     }
 };
 
-module.exports = getShopeeProduct;
+module.exports = scrapeShopeeProduct;

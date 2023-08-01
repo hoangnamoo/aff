@@ -4,7 +4,7 @@ const catchAsync = require('../utils/catchAsync');
 exports.newCampaign = catchAsync(async (req, res, next) => {
     //req.body.camp_id | camp_name
     let newCampaign = await Campaign.bulkCreate(req.body.campaignList, {
-        ignoreDuplicates: true,
+        updateOnDuplicate: ['cap', 'tax', 'userRate'],
     });
 
     res.status(200).json({

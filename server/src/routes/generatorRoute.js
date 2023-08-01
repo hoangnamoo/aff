@@ -3,6 +3,6 @@ const generatorController = require('../controllers/generatorController');
 
 const router = express.Router();
 
-router.route('/shopee').post(generatorController.getLinkShopee);
+router.route('/shopee').post(generatorController.getLinkAffiliate);
 
 module.exports = router;

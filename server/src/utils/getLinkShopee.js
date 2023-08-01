@@ -1,11 +1,8 @@
 const shopeeApi = require('../api/shopeeApi');
-const { Campaign } = require('../models');
-const catchAsync = require('../utils/catchAsync');
-const getShopeeProduct = require('../utils/getShopeeProduct');
+const AppError = require('./AppError');
+const scrapeShopeeProduct = require('./scrapeShopeeProduct');
 
-exports.getLinkShopee = catchAsync(async (req, res, next) => {
-    //input req.body.link
-
+const getLinkShopee = async (req, res, next, campOfLink) => {
     const query = `mutation {
         generateShortLink (input: {
           originUrl: "${req.body.link}"
@@ -17,7 +14,16 @@ exports.getLinkShopee = catchAsync(async (req, res, next) => {
 
     const { data } = await shopeeApi.callApi(query);
 
-    const productId = await getShopeeProduct(req.body.link);
+    const productId = await scrapeShopeeProduct(req.body.link);
+
+    if (!productId) {
+        return next(
+            new AppError(
+                'Không tìm thấy sản phẩm, Vui lòng kiểm tra lại link',
+                400
+            )
+        );
+    }
 
     const queryProduct = `{
         productOfferV2(itemId: ${productId}){
@@ -39,31 +45,34 @@ exports.getLinkShopee = catchAsync(async (req, res, next) => {
 
     const response = await shopeeApi.callApi(queryProduct);
     const productInfo = response.data.productOfferV2.nodes[0];
-    const campaign = await Campaign.findByPk('shopee');
-
     const { price, shopeeCommissionRate, sellerCommissionRate, imageUrl } =
         productInfo;
 
     const shopeeCommission =
-        shopeeCommissionRate * price > 15000
-            ? 15000
+        shopeeCommissionRate * price > campOfLink.cap
+            ? campOfLink.cap
             : shopeeCommissionRate * price;
 
     const sellerCommisson = sellerCommissionRate * price;
 
-    const commission = (shopeeCommission + sellerCommisson) * campaign.userRate;
+    const commission =
+        (shopeeCommission + sellerCommisson) * campOfLink.userRate;
     res.status(200).json({
         status: 'suceess',
-        data,
-        productInfo: {
-            ...productInfo,
-            price,
-            shopeeCommissionRate,
-            sellerCommissionRate,
-            imageUrl,
-            shopeeCommission,
-            sellerCommisson,
-            commission,
+        data: {
+            productInfo: {
+                ...productInfo,
+                price,
+                shopeeCommissionRate,
+                sellerCommissionRate,
+                imageUrl,
+                shopeeCommission,
+                sellerCommisson,
+                commission,
+            },
+            linkAffiliate: data.generateShortLink,
         },
     });
-});
+};
+
+module.exports = getLinkShopee;

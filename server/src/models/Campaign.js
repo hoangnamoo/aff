@@ -33,6 +33,9 @@ module.exports = DB.define(
         tax: {
             type: DataTypes.DECIMAL(10, 2),
         },
+        cap: {
+            type: DataTypes.INTEGER,
+        },
     },
     {
         timestamps: false,
