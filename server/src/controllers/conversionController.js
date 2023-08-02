@@ -63,14 +63,13 @@ exports.updateShopeeConversion = catchAsync(async (req, res, next) => {
             conversion.push({
                 conversionId: el.conversionId,
                 campId: 'shopee',
-                purchaseTime: el.purchaseTime,
-                clickTime: el.clickTime,
+                purchaseTime: new Date(el.purchaseTime),
+                clickTime: new Date(el.clickTime),
                 completeTime: el.completeTime,
                 merchant: 'shopee',
                 userId: el.utmContent.split('-')[0],
                 commission: el.totalCommission,
             });
-
             //Filter Orders
             el.orders.forEach((el2) => {
                 orders.push({

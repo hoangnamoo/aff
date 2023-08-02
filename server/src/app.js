@@ -10,6 +10,7 @@ const transactionRouter = require('./routes/transactionRoute');
 const campaignRouter = require('./routes/campaignRoute');
 const conversionRouter = require('./routes/conversionRoute');
 const generatorRouter = require('./routes/generatorRoute');
+const userRouter = require('./routes/userRoute');
 const AppError = require('./utils/AppError');
 
 const app = express();
@@ -17,6 +18,8 @@ const app = express();
 if (process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'));
 }
+
+app.use(express.static('src/public'));
 
 //read body into req.body
 app.use(express.json());
@@ -27,6 +30,7 @@ app.use('/api/v1/transaction', transactionRouter);
 app.use('/api/v1/campaign', campaignRouter);
 app.use('/api/v1/conversion', conversionRouter);
 app.use('/api/v1/generator', generatorRouter);
+app.use('/api/v1/user', userRouter);
 
 app.use('*', (req, res, next) => {
     next(new AppError(`Can not found ${req.originalUrl}`, 404));

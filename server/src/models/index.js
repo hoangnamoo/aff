@@ -3,7 +3,7 @@ const Campaign = require('./Campaign');
 const Conversion = require('./Conversion');
 const Item = require('./Item');
 const Order = require('./Order');
-
+const User = require('./User');
 //Setup Relationship
 Campaign.hasMany(Conversion, {
     foreignKey: 'campId',
@@ -67,4 +67,5 @@ module.exports = {
     Conversion,
     Order,
     Item,
+    User,
 };
