@@ -1,5 +1,6 @@
 const { DataTypes } = require('sequelize');
 const DB = require('../configs/dbConfig');
+const { getUnixTime } = require('date-fns');
 
 module.exports = DB.define(
     'Campaigns',
@@ -23,12 +24,12 @@ module.exports = DB.define(
             allowNull: false,
         },
         createTime: {
-            type: DataTypes.DATE,
-            defaultValue: new Date(),
+            type: DataTypes.INTEGER,
+            defaultValue: getUnixTime(new Date()),
         },
         updateTime: {
-            type: DataTypes.DATE,
-            defaultValue: new Date(),
+            type: DataTypes.INTEGER,
+            defaultValue: getUnixTime(new Date()),
         },
         tax: {
             type: DataTypes.DECIMAL(10, 2),

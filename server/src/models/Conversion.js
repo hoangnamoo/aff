@@ -10,13 +10,13 @@ module.exports = DB.define(
             primaryKey: true,
         },
         purchaseTime: {
-            type: DataTypes.DATE,
+            type: DataTypes.INTEGER,
         },
         clickTime: {
-            type: DataTypes.DATE,
+            type: DataTypes.INTEGER,
         },
         completeTime: {
-            type: DataTypes.DATE,
+            type: DataTypes.INTEGER,
         },
         merchant: {
             type: DataTypes.STRING,
@@ -38,7 +38,7 @@ module.exports = DB.define(
             defaultValue: false,
         },
         payTime: {
-            type: DataTypes.DATE,
+            type: DataTypes.INTEGER,
         },
     },
     {

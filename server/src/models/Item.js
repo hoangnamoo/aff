@@ -51,7 +51,7 @@ module.exports = DB.define(
             type: DataTypes.STRING,
         },
         completeTime: {
-            type: DataTypes.DATE,
+            type: DataTypes.INTEGER,
         },
     },
     {

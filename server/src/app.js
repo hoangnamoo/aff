@@ -1,6 +1,8 @@
 const express = require('express');
 const morgan = require('morgan');
 const globalErrorHandler = require('./controllers/errorController');
+const cookieParser = require('cookie-parser');
+const cors = require('cors');
 
 require('dotenv').config();
 
@@ -15,6 +17,10 @@ const AppError = require('./utils/AppError');
 
 const app = express();
 
+//1, GLOBAL MIDDLEWARE
+//implement CORS
+app.use(cors());
+
 if (process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'));
 }
@@ -24,6 +30,9 @@ app.use(express.static('src/public'));
 //read body into req.body
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+
+//Define Route
 app.use('/api/v1/ecommerce', ecommerceRouter);
 app.use('/api/v1/commission', commissionRouter);
 app.use('/api/v1/transaction', transactionRouter);

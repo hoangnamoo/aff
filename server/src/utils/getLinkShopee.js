@@ -6,7 +6,7 @@ const getLinkShopee = async (req, res, next, campOfLink) => {
     const query = `mutation {
         generateShortLink (input: {
           originUrl: "${req.body.link}"
-          subIds: ["${req.body.userId}"]
+          subIds: ["${req.user ? req.user.userId : ''}"]
         }) {
           shortLink
         }

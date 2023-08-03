@@ -2,6 +2,7 @@ const { all } = require('axios');
 const catchAsync = require('../utils/catchAsync');
 const { Conversion, Order, Item } = require('../models');
 const shopeeApi = require('../api/shopeeApi');
+const { getUnixTime } = require('date-fns');
 
 exports.updateShopeeConversion = catchAsync(async (req, res, next) => {
     let scrollId = '';
@@ -63,9 +64,11 @@ exports.updateShopeeConversion = catchAsync(async (req, res, next) => {
             conversion.push({
                 conversionId: el.conversionId,
                 campId: 'shopee',
-                purchaseTime: new Date(el.purchaseTime),
-                clickTime: new Date(el.clickTime),
-                completeTime: el.completeTime,
+                purchaseTime: getUnixTime(new Date(el.purchaseTime)),
+                clickTime: getUnixTime(new Date(el.clickTime)),
+                completeTime: el.completeTime
+                    ? getUnixTime(new Date(el.completeTime))
+                    : null,
                 merchant: 'shopee',
                 userId: el.utmContent.split('-')[0],
                 commission: el.totalCommission,
