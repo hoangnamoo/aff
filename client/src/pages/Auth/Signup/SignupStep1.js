@@ -20,6 +20,7 @@ function SignupStep1({ setStep, setUserInput, userInput }) {
                 const res = await authApi.signUpStep1({
                     email: userInput.email,
                 });
+                console.log(res);
                 if (`${res.status}`.startsWith('2')) setStep(2);
             } catch (error) {
                 console.log(error);
