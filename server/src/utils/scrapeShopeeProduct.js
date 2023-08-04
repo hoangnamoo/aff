@@ -27,6 +27,7 @@ const scrapeShopeeProduct = async (url) => {
         await browser.close();
         return itemId;
     } catch (error) {
+        console.log(error);
         await browser.close();
         return null;
     }
