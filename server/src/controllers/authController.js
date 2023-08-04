@@ -21,6 +21,8 @@ exports.signupStep1 = catchAsync(async (req, res, next) => {
             email: req.body.email,
         },
     });
+
+    console.log(user);
     if (user && user.verified)
         return next(new AppError('Email đã tồn tại', 400));
 
