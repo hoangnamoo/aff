@@ -6,6 +6,9 @@ module.exports = {
         fontFamily: {
             sans: ['Open Sans', 'sans-serif'],
         },
+        height: {
+            screen: ['100vh /* fallback for Opera, IE and etc. */', '100dvh'],
+        },
     },
     plugins: [],
 };
