@@ -44,6 +44,9 @@ const getLinkShopee = async (req, res, next, campOfLink) => {
       `;
 
     const response = await shopeeApi.callApi(queryProduct);
+    if (response.errors) {
+        return next(new AppError('Shopee Api isusses', 500));
+    }
     const productInfo = response.data.productOfferV2.nodes[0];
     const { price, shopeeCommissionRate, sellerCommissionRate, imageUrl } =
         productInfo;
