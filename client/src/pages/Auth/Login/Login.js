@@ -203,7 +203,6 @@ function Login() {
                     </Link>
                 </div>
             </div>
-            <div className="w-full px-10 h-10 flex items-end"></div>
         </div>
     );
 }

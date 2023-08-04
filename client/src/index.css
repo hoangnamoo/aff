@@ -5,7 +5,7 @@
 
 @layer base {
   body {
-      @apply bg-zinc-50
+      @apply bg-zinc-100
   }
   input {
     @apply focus-within:outline-slate-900
