@@ -1,24 +1,25 @@
 import { faPercent } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
+import { Link } from 'react-router-dom';
 
-function SignupHeader() {
+function AuthHeader() {
     return (
         <div className="flex justify-between w-full">
             <div>
                 <div>
-                    <span className="font-semibold">
+                    <Link to={'/'} className="font-semibold">
                         CH
                         <FontAwesomeIcon
                             className="text-pink-700"
                             icon={faPercent}
                         />
                         ETKHAU.pro
-                    </span>
+                    </Link>
                 </div>
             </div>
         </div>
     );
 }
 
-export default SignupHeader;
+export default AuthHeader;

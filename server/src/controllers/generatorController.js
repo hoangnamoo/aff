@@ -6,7 +6,7 @@ const AppError = require('../utils/AppError');
 const getLinkShopee = require('../utils/getLinkShopee');
 
 exports.getLinkAffiliate = catchAsync(async (req, res, next) => {
-    //input req.body: {link, userId}
+    //input req.body: {link, userId, type}
 
     const campSupportedLink = await Campaign.findAll({
         where: {

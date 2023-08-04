@@ -12,6 +12,8 @@ function LinkInput({ link, setLink, isLoading }) {
             typingTimer = setTimeout(() => {
                 setLink(e.target.value.trim());
             }, delayActionTime);
+        } else {
+            setLink('');
         }
     };
 
@@ -27,9 +29,9 @@ function LinkInput({ link, setLink, isLoading }) {
                 <input
                     ref={inputRef}
                     onKeyUp={handleTypingDone}
-                    className="h-full p-4 w-full rounded-lg bg-white shadow-lg outline-none focus-within:outline-none"
+                    className="h-full py-4 pr-8 pl-4 w-full rounded-lg bg-white shadow-lg outline-none focus-within:outline-none"
                     type="text"
-                    placeholder="Nhập link sản phẩm"
+                    placeholder="Nhập link sản phẩm để lấy chiết khấu"
                     autoFocus
                 />
                 {isLoading && (

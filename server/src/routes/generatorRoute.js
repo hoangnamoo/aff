@@ -4,6 +4,10 @@ const authController = require('../controllers/authController');
 
 const router = express.Router();
 
-router.route('/shopee').post(generatorController.getLinkAffiliate);
+router.route('/ecommerce/unlogin').post(generatorController.getLinkAffiliate);
+
+router
+    .route('/ecommerce')
+    .post(authController.protect, generatorController.getLinkAffiliate);
 
 module.exports = router;

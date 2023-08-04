@@ -70,7 +70,7 @@ const getLinkShopee = async (req, res, next, campOfLink) => {
                 sellerCommisson,
                 commission,
             },
-            linkAffiliate: data.generateShortLink,
+            linkAffiliate: req.user ? data.generateShortLink : null,
         },
     });
 };

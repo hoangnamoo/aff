@@ -4,10 +4,11 @@ import {
     faCircleNotch,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, redirect, useNavigate } from 'react-router-dom';
 import isEmail from 'validator/lib/isEmail';
 import authApi from '../../../api/authApi';
+import AuthHeader from '../../../components/AuthHeader';
 
 function Login() {
     const navigate = useNavigate();
@@ -116,7 +117,9 @@ function Login() {
             onKeyDown={handleEnter}
             className="h-screen flex flex-col items-center justify-between"
         >
-            <div>hearder</div>
+            <div className="w-full px-10 h-10 flex items-end">
+                <AuthHeader />
+            </div>
             <div className="flex w-full p-10 flex-col gap-8 select-none">
                 <div className="flex flex-col gap-4">
                     <span className="flex justify-center">
@@ -200,7 +203,7 @@ function Login() {
                     </Link>
                 </div>
             </div>
-            <div>footer</div>
+            <div className="w-full px-10 h-10 flex items-end"></div>
         </div>
     );
 }
