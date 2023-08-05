@@ -15,8 +15,8 @@ function Signup() {
 
     const [step, setStep] = useState(1);
     return (
-        <div className="h-screen flex flex-col items-center justify-between">
-            <div className="w-full px-10 h-10 flex items-end">
+        <div className="h-[100dvh] flex flex-col items-center justify-between">
+            <div className="w-full px-10 h-16 flex items-end">
                 <SignupHeader />
             </div>
             {step === 1 && (
@@ -42,7 +42,7 @@ function Signup() {
             )}
             {step === 4 && <SignupStep4 />}
             {step < 4 ? (
-                <div className="w-full px-10 h-10">
+                <div className="w-full px-10 py-4 items-start">
                     <StepBar stepNumber={3} stepIndex={step} />
                 </div>
             ) : (

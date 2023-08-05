@@ -49,7 +49,7 @@ function Home() {
         handleGetShortLink(link, access_token);
     }, [link, access_token]);
     return (
-        <div className="h-screen flex flex-col">
+        <div className="h-[100dvh] flex flex-col">
             <Header />
             <div
                 className={`mt-16 p-2 flex flex-col gap-4 h-full ${

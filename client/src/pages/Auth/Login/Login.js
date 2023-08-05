@@ -115,7 +115,7 @@ function Login() {
     return (
         <div
             onKeyDown={handleEnter}
-            className="h-screen  flex flex-col items-center justify-between"
+            className="h-[100dvh]  flex flex-col items-center justify-between"
         >
             <div className="w-full px-10 h-10 flex items-end">
                 <AuthHeader />
