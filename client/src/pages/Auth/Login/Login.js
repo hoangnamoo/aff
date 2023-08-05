@@ -77,7 +77,12 @@ function Login() {
                     email: input.email.value,
                     password: input.password.value,
                 });
+                const { name, avatar } = res.data.user;
                 localStorage.setItem('access_token', res.data.token);
+                localStorage.setItem(
+                    'user_info',
+                    JSON.stringify({ name, avatar })
+                );
                 navigate('/');
             } catch (error) {
                 console.log(error);

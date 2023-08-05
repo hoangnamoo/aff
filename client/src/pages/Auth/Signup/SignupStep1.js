@@ -98,7 +98,7 @@ function SignupStep1({ setStep, setUserInput, userInput }) {
                 )}
             </button>
             <div className="flex gap-1 justify-center">
-                <span>Bạn đã có tài khoản?</span>
+                <span className="text-gray-400">Bạn đã có tài khoản?</span>
                 <Link className="underline text-pink-700" to="/login">
                     Đăng nhập
                 </Link>

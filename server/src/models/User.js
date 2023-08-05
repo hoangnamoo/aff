@@ -70,7 +70,7 @@ module.exports = DB.define(
         },
         avatar: {
             type: DataTypes.STRING,
-            defaultValue: 'no-avater.jpg',
+            defaultValue: 'no-avatar.png',
         },
         createTime: {
             type: DataTypes.INTEGER,

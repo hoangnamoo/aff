@@ -30,7 +30,12 @@ function SignupStep3({ setStep, setUserInput, userInput }) {
                     password: userInput.password,
                     resetToken: userInput.resetToken,
                 });
+                const { name, avatar } = res.data.user;
                 localStorage.setItem('access_token', res.data.token);
+                localStorage.setItem(
+                    'user_info',
+                    JSON.stringify({ name, avatar })
+                );
                 if (`${res.status}`.startsWith('2')) setStep(4);
             } catch (error) {
                 console.log(error);
