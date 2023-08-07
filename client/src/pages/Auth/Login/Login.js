@@ -87,6 +87,7 @@ function Login() {
                     JSON.stringify({ name, avatar })
                 );
                 dispatch(authActions.login());
+                dispatch(authActions.setUserInfo(res.data.user));
                 navigate('/');
             } catch (error) {
                 console.log(error);
