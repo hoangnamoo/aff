@@ -3,51 +3,65 @@ import Header from '../../components/Header';
 import LinkInput from './LinkInput';
 import ProductCard from '../../components/ProductCard';
 import generateLinkApi from '../../api/generateLinkApi';
+import { useSelector } from 'react-redux';
 
 function Home() {
     const [link, setLink] = useState('');
     const [isLoading, setIsLoading] = useState(false);
-    const [productInfo, setProductInfo] = useState();
+    const [productInfo, setProductInfo] = useState({
+        productInfo: {
+            productName: 'Quan lot khe oke',
+            shopName: 'Viet Pro',
+            price: '99000',
+            commission: '8000',
+            imageUrl:
+                'https://images.unsplash.com/photo-1636096625948-c1235f1b2e9b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1287&q=80',
+        },
+        linkAffiliate: {
+            shortLink: 'https://google.com.vn',
+        },
+    });
     const [errorMsg, setErrorMsg] = useState('');
+
+    const authState = useSelector((state) => state.auth);
 
     const access_token = localStorage.getItem('access_token');
 
-    const handleGetShortLink = async (link, access_token) => {
-        if (link) {
-            setIsLoading(true);
-            if (!access_token) {
-                try {
-                    const { data } = await generateLinkApi.getLinkEcomUnlogin({
-                        link,
-                    });
-                    setProductInfo(data.data);
-                } catch (error) {
-                    setErrorMsg(
-                        'Link không được hỗ trợ, Vui lòng kiểm tra lại.'
-                    );
-                }
-            } else {
-                try {
-                    const res = await generateLinkApi.getLinkEcomlogedin({
-                        link,
-                    });
-                    setProductInfo(res.data.data);
-                } catch (error) {
-                    setErrorMsg(
-                        'Link không được hỗ trợ, Vui lòng kiểm tra lại.'
-                    );
-                }
-            }
-            setIsLoading(false);
-        }
-    };
+    // const handleGetShortLink = async (link, access_token) => {
+    //     if (link) {
+    //         setIsLoading(true);
+    //         if (!access_token) {
+    //             try {
+    //                 const { data } = await generateLinkApi.getLinkEcomUnlogin({
+    //                     link,
+    //                 });
+    //                 setProductInfo(data.data);
+    //             } catch (error) {
+    //                 setErrorMsg(
+    //                     'Link không được hỗ trợ, Vui lòng kiểm tra lại.'
+    //                 );
+    //             }
+    //         } else {
+    //             try {
+    //                 const res = await generateLinkApi.getLinkEcomlogedin({
+    //                     link,
+    //                 });
+    //                 setProductInfo(res.data.data);
+    //             } catch (error) {
+    //                 setErrorMsg(
+    //                     'Link không được hỗ trợ, Vui lòng kiểm tra lại.'
+    //                 );
+    //             }
+    //         }
+    //         setIsLoading(false);
+    //     }
+    // };
 
-    console.log(link);
-    useEffect(() => {
-        setProductInfo();
-        setErrorMsg('');
-        handleGetShortLink(link, access_token);
-    }, [link, access_token]);
+    // useEffect(() => {
+    //     setProductInfo();
+    //     setErrorMsg('');
+    //     handleGetShortLink(link, access_token);
+    // }, [link, access_token]);
     return (
         <div className="h-[100dvh] flex flex-col">
             <Header />

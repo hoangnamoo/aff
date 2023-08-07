@@ -29,6 +29,10 @@ const authApi = {
             password: data.password,
         });
     },
+    getUserInfo() {
+        const baseURL = 'user/get-me';
+        return axiosClient.get(baseURL);
+    },
 };
 
 export default authApi;

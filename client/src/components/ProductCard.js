@@ -1,16 +1,17 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 function ProductCard({ productInfo, linkAff }) {
-    const access_token = localStorage.getItem('access_token');
+    const { isLogined } = useSelector((state) => state.auth);
     const { productName, shopName, price, commission, imageUrl } = productInfo;
-    const userRatio = commission / price;
+    const userRatio = (commission / price).toFixed(2);
     return (
         <div className="flex flex-col text-xs gap-1 relative w-52 bg-white shadow-md rounded-lg">
             <div className="flex justify-center">
                 <div className="h-52 aspect-square overflow-hidden rounded-lg">
                     <img
-                        className="h-full object-cover"
+                        className="h-full w-full object-cover"
                         src={imageUrl}
                         alt="quan-ao"
                     />
@@ -31,8 +32,8 @@ function ProductCard({ productInfo, linkAff }) {
                 <span className="text-pink-600">{`Hoàn tiền: ${commission}`}</span>
             </div>
             <Link
-                target={access_token ? '_blank' : '_self'}
-                to={!access_token ? '/login' : linkAff.shortLink}
+                target={isLogined ? '_blank' : '_self'}
+                to={!isLogined ? '/login' : linkAff.shortLink}
                 className="p-1 bg-pink-600 text-white rounded-lg absolute bottom-2 right-2"
             >
                 Mua ngay

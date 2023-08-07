@@ -70,7 +70,6 @@ module.exports = DB.define(
         },
         avatar: {
             type: DataTypes.STRING,
-            defaultValue: 'no-avatar.png',
         },
         createTime: {
             type: DataTypes.INTEGER,
@@ -80,6 +79,20 @@ module.exports = DB.define(
     {
         timestamps: false,
         freezeTableName: true,
+        defaultScope: {
+            attributes: {
+                exclude: [
+                    'password',
+                    'hashedOTPCode',
+                    'OTPExpires',
+                    'OTPType',
+                    'passwordResetToken',
+                    'passwordResetExpires',
+                    'changePasswordTime',
+                    'role',
+                ],
+            },
+        },
         hooks: {
             beforeCreate: function (user) {
                 user.email = user.email.toLowerCase();

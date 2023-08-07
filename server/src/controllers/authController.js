@@ -145,7 +145,12 @@ exports.login = catchAsync(async (req, res, next) => {
     //2, check exist user and password //Do not show exactly user or password is incorrect!
     const currentUser = await User.findOne({
         where: { email },
+        attributes: {
+            include: ['password'],
+        },
     });
+
+    console.log(currentUser);
 
     if (
         !currentUser ||
@@ -175,7 +180,6 @@ exports.protect = catchAsync(async (req, res, next) => {
     //2, check user exits with id from Token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    console.log(decoded);
     const currentUser = await User.findByPk(decoded.id);
     if (!currentUser) {
         return next(new AppError('User not exist, please login again!!', 401));
@@ -187,7 +191,6 @@ exports.protect = catchAsync(async (req, res, next) => {
             new AppError('user changed password, plesae login again!', 401)
         );
     }
-
     //provide currentUser to next action
     req.user = currentUser;
 

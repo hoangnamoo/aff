@@ -9,8 +9,11 @@ import { Link, redirect, useNavigate } from 'react-router-dom';
 import isEmail from 'validator/lib/isEmail';
 import authApi from '../../../api/authApi';
 import AuthHeader from '../../../components/AuthHeader';
+import { useDispatch } from 'react-redux';
+import { authActions } from '../../../store/authSlice';
 
 function Login() {
+    const dispatch = useDispatch();
     const navigate = useNavigate();
     const [eye, setEye] = useState(false);
     const [errorMsg, setErrorMsg] = useState('');
@@ -83,6 +86,7 @@ function Login() {
                     'user_info',
                     JSON.stringify({ name, avatar })
                 );
+                dispatch(authActions.login());
                 navigate('/');
             } catch (error) {
                 console.log(error);
