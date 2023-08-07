@@ -148,6 +148,7 @@ function Login() {
                     {Object.keys(input).map((el, index) => (
                         <div key={index} className="relative">
                             <input
+                                autoCapitalize="off"
                                 className={`p-3 rounded-lg w-full ${
                                     input[el].validate
                                         ? 'border'
@@ -155,6 +156,7 @@ function Login() {
                                 } `}
                                 type={input[el].type}
                                 name={input[el].name}
+                                value={input[el].value}
                                 placeholder={input[el].placeholder}
                                 onChange={handleInput}
                                 onBlur={handleBlur}

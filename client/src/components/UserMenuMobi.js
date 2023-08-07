@@ -71,7 +71,7 @@ function UserMenuMobi({ isOpen }) {
                         <span>{`Chờ duyệt: 999.080đ`}</span>
                     </div>
                 </div>
-                <ul className="flex flex-col items-start gap-1 w-full text-slate-800">
+                <ul className="flex flex-col items-start w-full text-slate-800">
                     {menuList.map((el, index) => (
                         <li
                             key={index}
