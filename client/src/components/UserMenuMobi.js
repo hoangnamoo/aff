@@ -1,7 +1,6 @@
 import {
     faArrowRightFromBracket,
-    faBox,
-    faMoneyBillTransfer,
+    faRectangleList,
     faSackDollar,
     faUser,
     faUserGear,
@@ -9,7 +8,7 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { authActions } from '../store/authSlice';
 
 function UserMenuMobi({ isOpen }) {
@@ -19,27 +18,42 @@ function UserMenuMobi({ isOpen }) {
         localStorage.removeItem('access_token');
         localStorage.removeItem('user_info');
     };
+
+    const navigate = useNavigate();
+
+    const handleNavigate = (path) => {
+        navigate(`/${path}`);
+    };
     const menuList = [
         {
-            title: 'Thanh toán',
-            type: 'nomal',
-            path: '/',
-            icon: <FontAwesomeIcon icon={faSackDollar} />,
+            title: 'Rút tiền',
+            path: 'withdraw',
+            icon: (
+                <FontAwesomeIcon
+                    className="pointer-events-none"
+                    icon={faSackDollar}
+                />
+            ),
         },
         {
             title: 'Đơn hàng',
-            path: '/',
-            icon: <FontAwesomeIcon icon={faBox} />,
-        },
-        {
-            title: 'Lịch sử giao dịch',
-            path: '/',
-            icon: <FontAwesomeIcon icon={faMoneyBillTransfer} />,
+            path: 'signup',
+            icon: (
+                <FontAwesomeIcon
+                    className="pointer-events-none"
+                    icon={faRectangleList}
+                />
+            ),
         },
         {
             title: 'Thông tin tài khoản',
-            path: '/',
-            icon: <FontAwesomeIcon icon={faUserGear} />,
+            path: 'login',
+            icon: (
+                <FontAwesomeIcon
+                    className="pointer-events-none"
+                    icon={faUserGear}
+                />
+            ),
         },
     ];
     const { userInfo } = useSelector((state) => state.auth);
@@ -71,17 +85,18 @@ function UserMenuMobi({ isOpen }) {
                         <span>{`Chờ duyệt: 999.080đ`}</span>
                     </div>
                 </div>
-                <ul className="flex flex-col items-start w-full text-slate-800">
+                <div className="flex flex-col items-start w-full text-slate-800">
                     {menuList.map((el, index) => (
-                        <li
+                        <div
+                            onClick={() => handleNavigate(el.path)}
                             key={index}
-                            className="flex gap-2 items-center px-2 p-3"
+                            className="flex gap-2 items-center px-2 p-3 cursor-pointer select-none"
                         >
-                            <span className="w-4">{el.icon}</span>
-                            <Link to={el.path}>{el.title}</Link>
-                        </li>
+                            <span className="w-5">{el.icon}</span>
+                            <span>{el.title}</span>
+                        </div>
                     ))}
-                </ul>
+                </div>
                 <div className="border-t w-full select-none">
                     <span
                         onClick={handleLogOut}

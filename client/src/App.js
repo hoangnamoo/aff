@@ -5,6 +5,7 @@ import Home from './pages/Home/Home';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { getUserInfoByToken } from './store/authSlice';
+import Withdraw from './pages/User/Withdraw/Withdraw';
 
 function App() {
     const dispatch = useDispatch();
@@ -27,6 +28,10 @@ function App() {
             path: '/login',
             element: <Login />,
             loader: Login.loader,
+        },
+        {
+            path: '/withdraw',
+            element: <Withdraw />,
         },
     ]);
     return <RouterProvider router={router} />;

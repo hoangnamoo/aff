@@ -1,4 +1,4 @@
-import { faBars, faPercent, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faPercent, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -19,9 +19,6 @@ function Header() {
     return (
         <div className="h-16 fixed top-0 w-full flex items-center justify-between p-2 border-b shadow-sm bg-white z-10">
             <div className="h-full flex gap-2 items-center font-semibold">
-                <span className="text-2xl">
-                    <FontAwesomeIcon icon={faBars} />
-                </span>
                 <span>
                     CH
                     <FontAwesomeIcon
@@ -55,7 +52,7 @@ function Header() {
                     </div>
                 )}
                 {!isLogined && (
-                    <div className="flex items-center w-full h-full bg-slate-950 py-4 px-2 text-white rounded-lg">
+                    <div className="flex items-center w-full h-full bg-slate-950 py-4 px-2 text-white text-sm rounded-lg">
                         <Link to="/login">Đăng nhập</Link>
                     </div>
                 )}
