@@ -5,7 +5,7 @@ import Home from './pages/Home/Home';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { getUserInfoByToken } from './store/authSlice';
-import Withdraw from './pages/User/Withdraw/Withdraw';
+import Withdraw from './pages/User/Withdraw';
 
 function App() {
     const dispatch = useDispatch();

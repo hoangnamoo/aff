@@ -1,16 +1,13 @@
-import {
-    faArrowLeft,
-    faClockRotateLeft,
-} from '@fortawesome/free-solid-svg-icons';
+import { faCircleNotch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 import Select from 'react-select';
 
-function Withdraw() {
+function WithdrawStep1({ setStep, setRequestInfo }) {
     const cash = 999999;
     const cashConvert = new Intl.NumberFormat();
 
+    const [isLoading, setIsLoading] = useState(false);
     const [input, setInput] = useState({
         bank: {
             value: null,
@@ -46,18 +43,52 @@ function Withdraw() {
     const handleInput = (e) => {
         const name = e.target.name;
         const value = e.target.value;
+
+        if (name === 'amount') {
+            return setInput((prev) => ({
+                ...prev,
+                [e.target.name]: {
+                    ...prev[name],
+                    value: value * 1 < cash ? value : cash,
+                    validate: true,
+                },
+            }));
+        }
+
         setInput((prev) => ({
             ...prev,
-            [e.target.name]: { ...prev[name], value, validate: true },
+            [e.target.name]: {
+                ...prev[name],
+                value,
+                validate: true,
+            },
         }));
+    };
+
+    const handleSubmit = () => {
+        if (validateAll) {
+            console.log('next Stepp');
+            setIsLoading(true);
+            setRequestInfo(input);
+            setStep((prev) => prev + 1);
+            setIsLoading(false);
+        }
     };
 
     const handleBlur = (e) => {
         const name = e.target.name;
         const value = e.target.value;
+        validate(value, name);
+    };
+
+    const handleBlurSelect = (value, name) => {
+        validate(value, name);
+    };
+
+    const handleFocusSelect = () => {
         setInput((prev) => ({
             ...prev,
-            [e.target.name]: { ...prev[name], validate: value.trim() > 0 },
+            bank: { ...prev.bank, validate: true },
         }));
     };
 
@@ -66,6 +97,49 @@ function Withdraw() {
             ...prev,
             bank: { ...prev.bank, value },
         }));
+    };
+
+    const validate = (value, type) => {
+        switch (type) {
+            case 'amount':
+                setInput((prev) => ({
+                    ...prev,
+                    [type]: {
+                        ...prev[type],
+                        validate: !isNaN(value) && value.length > 0,
+                    },
+                }));
+                break;
+            case 'accountNumber':
+                setInput((prev) => ({
+                    ...prev,
+                    [type]: {
+                        ...prev[type],
+                        validate: !isNaN(value) && value.length > 0,
+                    },
+                }));
+                break;
+            case 'accountName':
+                setInput((prev) => ({
+                    ...prev,
+                    [type]: {
+                        ...prev[type],
+                        validate: value.length > 0,
+                    },
+                }));
+                break;
+            case 'bank':
+                setInput((prev) => ({
+                    ...prev,
+                    [type]: {
+                        ...prev[type],
+                        validate: value ? true : false,
+                    },
+                }));
+                break;
+            default:
+                break;
+        }
     };
 
     const bankList = [
@@ -83,27 +157,14 @@ function Withdraw() {
         },
     ];
 
-    console.log(input);
+    const validateAll = Object.keys(input).every((el) => input[el].value);
     return (
-        <div className="h-[100dvh] flex flex-col justify-between">
-            <div className="flex justify-between items-center p-4 bg-slate-900 text-white font-semibold">
-                <Link
-                    to={'/'}
-                    className="flex items-center justify-center rounded-full w-10 aspect-square hover:bg-white hover:text-slate-900"
-                >
-                    <FontAwesomeIcon icon={faArrowLeft} />
-                </Link>
-                <span>Rút tiền</span>
-                <Link
-                    to={'/'}
-                    className="flex items-center justify-center rounded-full w-10 aspect-square hover:bg-white hover:text-slate-900"
-                >
-                    <FontAwesomeIcon icon={faClockRotateLeft} />
-                </Link>
-            </div>
+        <div className="h-full flex flex-col justify-between">
+            <div></div>
             <div>
                 <div className="flex flex-col items-center justify-start flex-1 text-slate-900">
-                    <span className="p-4 text-2xl font-semibold flex justify-center items-center gap-1">
+                    <span className="text-sm">SỐ DƯ</span>
+                    <span className="px-4 py-2 text-2xl font-semibold flex justify-center items-center gap-1">
                         {`${cashConvert.format(cash)}`}
                         <span className="text-base flex items-end">đ</span>
                     </span>
@@ -111,7 +172,7 @@ function Withdraw() {
                 <div className="p-4 relative flex flex-col gap-6">
                     {Object.keys(input).map((el, index) =>
                         !input[el].exclude ? (
-                            <div key={index} className={`h-11 border`}>
+                            <div key={index} className={`h-11`}>
                                 <input
                                     onBlur={handleBlur}
                                     value={input[el].value}
@@ -123,21 +184,21 @@ function Withdraw() {
                                         !input[el].validate && 'border-red-500'
                                     }`}
                                 />
-                                {!input[el].validate && (
-                                    <span className="text-sm text-red-500">
-                                        {input[el].msg}
-                                    </span>
-                                )}
                             </div>
                         ) : (
                             <div key={index} className="h-11">
                                 <Select
                                     value={input.bank.value}
+                                    onBlur={() =>
+                                        handleBlurSelect(input[el].value, el)
+                                    }
+                                    onFocus={handleFocusSelect}
                                     onChange={handleSelect}
                                     options={bankList}
                                     isClearable
                                     components={{
                                         IndicatorSeparator: false,
+                                        NoOptionsMessage: 'Không có lựa chọn',
                                     }}
                                     placeholder="Tên ngân hàng"
                                     styles={{
@@ -147,12 +208,24 @@ function Withdraw() {
                                             borderRadius: 8,
                                             height: 44,
                                             borderWidth: 1,
-                                            borderColor: '#e5e7eb',
+                                            borderColor: input.bank.validate
+                                                ? '#e5e7eb'
+                                                : 'red',
                                         }),
                                     }}
                                 />
                             </div>
                         )
+                    )}
+                    {validateAll && (
+                        <div className="flex justify-end items-center gap-1">
+                            <span className="text-sm text-gray-400">
+                                Lưu tài khoản này làm mặc định?
+                            </span>
+                            <button className="px-2 py-1 rounded-lg text-white text-sm bg-pink-700">
+                                Lưu
+                            </button>
+                        </div>
                     )}
                 </div>
                 <div className="p-4">
@@ -168,12 +241,27 @@ function Withdraw() {
                 </div>
             </div>
             <div className="flex items-center justify-center p-4">
-                <button className="p-3 w-full bg-pink-600 text-white rounded-lg">
-                    Tiếp theo
+                <button
+                    onClick={handleSubmit}
+                    disabled={!validateAll}
+                    className={`p-3 w-full bg-pink-600 text-white rounded-lg ${
+                        !validateAll && 'opacity-60 cursor-not-allowed'
+                    }`}
+                >
+                    {isLoading ? (
+                        <span>
+                            <FontAwesomeIcon
+                                className="animate-spin"
+                                icon={faCircleNotch}
+                            />
+                        </span>
+                    ) : (
+                        'Tiếp theo'
+                    )}
                 </button>
             </div>
         </div>
     );
 }
 
-export default Withdraw;
+export default WithdrawStep1;
