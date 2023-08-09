@@ -8,7 +8,8 @@ import hideStringEmail from '../../../utils/hideStringEmail';
 function WithdrawStep2({ requestInfo }) {
     const { userInfo } = useSelector((state) => state.auth);
     return (
-        <div className="h-full flex flex-col justify-between mt-16">
+        <div className="h-full flex flex-col justify-between">
+            <div></div>
             <div className="flex flex-col justify-center items-center">
                 <div className="p-4 flex flex-col   w-full">
                     <div className="px-4 py-6 w-full bg-pink-100 text-pink-700 text-sm rounded-lg">
