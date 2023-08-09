@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 
 function WithdrawHeader() {
     return (
-        <div className="flex absolute w-full justify-between items-center p-4 bg-slate-900 text-white font-semibold">
+        <div className="flex w-full justify-between items-center p-3 bg-slate-900 text-white font-semibold">
             <Link
                 to={'/'}
                 className="flex items-center justify-center rounded-full w-10 aspect-square hover:bg-white hover:text-slate-900"

@@ -81,21 +81,11 @@ function WithdrawStep1({ setStep, setRequestInfo }) {
         validate(value, name);
     };
 
-    const handleBlurSelect = (value, name) => {
-        validate(value, name);
-    };
-
-    const handleFocusSelect = () => {
-        setInput((prev) => ({
-            ...prev,
-            bank: { ...prev.bank, validate: true },
-        }));
-    };
-
     const handleSelect = (value) => {
+        console.log(value ? true : false);
         setInput((prev) => ({
             ...prev,
-            bank: { ...prev.bank, value },
+            bank: { ...prev.bank, value, validate: value ? true : false },
         }));
     };
 
@@ -157,6 +147,7 @@ function WithdrawStep1({ setStep, setRequestInfo }) {
         },
     ];
 
+    console.log(input);
     const validateAll = Object.keys(input).every((el) => input[el].value);
     return (
         <div className="h-full flex flex-col justify-between">
@@ -189,10 +180,6 @@ function WithdrawStep1({ setStep, setRequestInfo }) {
                             <div key={index} className="h-11">
                                 <Select
                                     value={input.bank.value}
-                                    onBlur={() =>
-                                        handleBlurSelect(input[el].value, el)
-                                    }
-                                    onFocus={handleFocusSelect}
                                     onChange={handleSelect}
                                     options={bankList}
                                     isClearable
