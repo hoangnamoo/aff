@@ -33,6 +33,16 @@ const authApi = {
         const baseURL = 'user/get-me';
         return axiosClient.get(baseURL);
     },
+    getOTP() {
+        const baseURL = 'user/otp';
+        return axiosClient.get(baseURL);
+    },
+    verifyOTP(data) {
+        const baseURL = 'user/otp';
+        return axiosClient.post(baseURL, {
+            OTPCode: data.OTPCode,
+        });
+    },
 };
 
 export default authApi;

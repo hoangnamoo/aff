@@ -9,6 +9,10 @@ router.post('/signup/step2', authController.signupStep2);
 router.post('/signup/step3', authController.signupStep3);
 router.post('/login', authController.login);
 
-router.get('/get-me', authController.protect, userController.getMe);
+//Route required Logined
+router.use(authController.protect);
+
+router.get('/get-me', userController.getMe);
+router.route('/otp').get(authController.getOTP).post(authController.verifyOTP);
 
 module.exports = router;

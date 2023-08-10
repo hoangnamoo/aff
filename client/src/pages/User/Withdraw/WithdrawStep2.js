@@ -1,9 +1,36 @@
-import React from 'react';
+import React, { useState } from 'react';
 import OtpInput from '../../../components/OtpInput';
 import { useSelector } from 'react-redux';
 import hideStringEmail from '../../../utils/hideStringEmail';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircleNotch } from '@fortawesome/free-solid-svg-icons';
+import paymentApi from '../../../api/paymentApi';
+import { useNavigate } from 'react-router-dom';
 
 function WithdrawStep2({ requestInfo }) {
+    const [otp, setOtp] = useState(new Array(6).fill(''));
+    const [isLoading, setIsLoading] = useState(false);
+    const validateAll = otp.every((el) => el);
+    const navigation = useNavigate();
+
+    const handleSubmit = async () => {
+        if (validateAll) {
+            setIsLoading(true);
+            try {
+                const res = await paymentApi.requestWithdraw({
+                    OTPCode: otp.join(''),
+                    requestInfo,
+                });
+                if (`${res.status}`.startsWith('2')) {
+                    navigation('/');
+                }
+            } catch (error) {
+                console.log(error);
+            }
+            setIsLoading(false);
+        }
+    };
+
     const { userInfo } = useSelector((state) => state.auth);
     return (
         <div className="h-full flex flex-col justify-between">
@@ -51,12 +78,27 @@ function WithdrawStep2({ requestInfo }) {
                 </div>
 
                 <div className="p-6">
-                    <OtpInput />
+                    <OtpInput otp={otp} setOtp={setOtp} />
                 </div>
             </div>
             <div className="flex justify-center p-4">
-                <button className="p-3 bg-pink-600 text-white w-full rounded-lg">
-                    Xác nhận
+                <button
+                    onClick={handleSubmit}
+                    disabled={!validateAll}
+                    className={`p-3 bg-pink-600 text-white w-full rounded-lg ${
+                        !validateAll && 'opacity-60 cursor-not-allowed'
+                    }`}
+                >
+                    {isLoading ? (
+                        <span>
+                            <FontAwesomeIcon
+                                className="animate-spin"
+                                icon={faCircleNotch}
+                            />
+                        </span>
+                    ) : (
+                        'Xác nhận'
+                    )}
                 </button>
             </div>
         </div>

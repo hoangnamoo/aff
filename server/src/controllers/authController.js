@@ -11,6 +11,7 @@ const generateOTP = require('../utils/generateOTP');
 const createSendToken = require('../utils/createSendToken');
 const checkPasswordCorrect = require('../utils/checkPasswordCorrect');
 const changedPasswordAfter = require('../utils/changedPasswordAfter');
+// const factory = require('./controllerFactory');
 
 exports.signupStep1 = catchAsync(async (req, res, next) => {
     //input req.body.email
@@ -149,8 +150,6 @@ exports.login = catchAsync(async (req, res, next) => {
         },
     });
 
-    console.log(currentUser);
-
     if (
         !currentUser ||
         !(await checkPasswordCorrect(password, currentUser.password))
@@ -195,4 +194,63 @@ exports.protect = catchAsync(async (req, res, next) => {
     next();
 });
 
-const getOTP = catchAsync(async (req, res, next) => {});
+exports.getOTP = catchAsync(async (req, res, next) => {
+    //input req.user
+    //1, Genarate OTP Code and create User
+    const OTPCode = generateOTP(6);
+    const hashedOTPCode = crypto
+        .createHash('sha256')
+        .update(OTPCode)
+        .digest('hex');
+    const OTPExpires = getUnixTime(new Date().getTime() + 3 * 60 * 1000); //Expires 3 minutes
+    const currentUser = await User.findByPk(req.user.userId);
+    currentUser.hashedOTPCode = hashedOTPCode;
+    currentUser.OTPExpires = OTPExpires;
+    await currentUser.save();
+
+    //2,Send Email
+    await new Email(currentUser, null, OTPCode).sendOTP();
+
+    //3, Send Response
+    res.status(200).json({
+        status: 'success',
+        message: 'OTP đã được gửi về Email của bạn',
+    });
+});
+
+exports.verifyOTP = catchAsync(async (req, res, next) => {
+    //req.user req.body.OTPCode req.body.isMiddleware
+
+    console.log(req.body);
+    //1, check OTP
+    const hashedOTPCode = crypto
+        .createHash('sha256')
+        .update(`${req.body.OTPCode}` || '')
+        .digest('hex');
+
+    const currentUser = await User.findOne({
+        where: {
+            userId: req.user.userId,
+            hashedOTPCode,
+            OTPExpires: {
+                [Op.gte]: getUnixTime(new Date()),
+            },
+        },
+    });
+    if (!currentUser)
+        return next(new AppError('OTP không chính xác hoặc đã hết hạn', 401));
+
+    currentUser.hashedOTPCode = null;
+    currentUser.OTPExpires = null;
+    await currentUser.save();
+
+    //2, Send response
+    if (req.body.isMiddleware) {
+        return next();
+    }
+
+    res.status(200).json({
+        status: 'success',
+        message: 'Xác thực OTP thành công',
+    });
+});

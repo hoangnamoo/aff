@@ -17,7 +17,7 @@ function WithdrawHeader() {
             </Link>
             <span>Rút tiền</span>
             <Link
-                to={'/'}
+                to={'/withdraw/history'}
                 className="flex items-center justify-center rounded-full w-10 aspect-square hover:bg-white hover:text-slate-900"
             >
                 <FontAwesomeIcon icon={faClockRotateLeft} />

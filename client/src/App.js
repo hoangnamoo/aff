@@ -6,6 +6,7 @@ import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { getUserInfoByToken } from './store/authSlice';
 import Withdraw from './pages/User/Withdraw';
+import WithdrawHistory from './pages/User/WithdrawHistory';
 
 function App() {
     const dispatch = useDispatch();
@@ -31,7 +32,16 @@ function App() {
         },
         {
             path: '/withdraw',
-            element: <Withdraw />,
+            children: [
+                {
+                    index: true,
+                    element: <Withdraw />,
+                },
+                {
+                    path: 'history',
+                    element: <WithdrawHistory />,
+                },
+            ],
         },
     ]);
     return <RouterProvider router={router} />;

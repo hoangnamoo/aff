@@ -13,6 +13,7 @@ const campaignRouter = require('./routes/campaignRoute');
 const conversionRouter = require('./routes/conversionRoute');
 const generatorRouter = require('./routes/generatorRoute');
 const userRouter = require('./routes/userRoute');
+const paymentRouter = require('./routes/paymentRoute');
 const AppError = require('./utils/AppError');
 
 const app = express();
@@ -40,6 +41,7 @@ app.use('/api/v1/campaign', campaignRouter);
 app.use('/api/v1/conversion', conversionRouter);
 app.use('/api/v1/generator', generatorRouter);
 app.use('/api/v1/user', userRouter);
+app.use('/api/v1/payment', paymentRouter);
 
 app.use('*', (req, res, next) => {
     next(new AppError(`Can not found ${req.originalUrl}`, 404));

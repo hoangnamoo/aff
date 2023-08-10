@@ -2,11 +2,13 @@ import { faCircleNotch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState } from 'react';
 import Select from 'react-select';
+import authApi from '../../../api/authApi';
 
 function WithdrawStep1({ setStep, setRequestInfo }) {
     const cash = 999999;
 
     const [isLoading, setIsLoading] = useState(false);
+    const [errorMsg, setErrorMsg] = useState('');
     const [input, setInput] = useState({
         bank: {
             value: null,
@@ -67,18 +69,24 @@ function WithdrawStep1({ setStep, setRequestInfo }) {
             ...prev,
             [e.target.name]: {
                 ...prev[name],
-                value,
+                value: value.toUpperCase(),
                 validate: true,
             },
         }));
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         if (validateAll) {
-            console.log('next Stepp');
             setIsLoading(true);
-            setRequestInfo(input);
-            setStep((prev) => prev + 1);
+            try {
+                const res = await authApi.getOTP();
+                setRequestInfo(input);
+                setStep((prev) => prev + 1);
+                console.log(res);
+            } catch (error) {
+                console.log(error);
+                setErrorMsg(error.message);
+            }
             setIsLoading(false);
         }
     };
@@ -238,6 +246,7 @@ function WithdrawStep1({ setStep, setRequestInfo }) {
                         </div>
                     </div>
                 </div>
+                {errorMsg && <span>{errorMsg}</span>}
             </div>
             <div className="flex items-center justify-center p-4">
                 <button

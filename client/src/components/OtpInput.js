@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 let currentIndex = 0;
-function OtpInput() {
-    const [otp, setOtp] = useState(new Array(6).fill(''));
+function OtpInput({ otp, setOtp }) {
     const [otpIndex, setOtpIndex] = useState(0);
     const inputRef = useRef();
 
