@@ -31,12 +31,11 @@ exports.signupStep1 = catchAsync(async (req, res, next) => {
         });
     //2, Genarate OTP Code and create User
     const OTPCode = generateOTP(6);
-    console.log(OTPCode);
     const hashedOTPCode = crypto
         .createHash('sha256')
         .update(OTPCode)
         .digest('hex');
-    const OTPExpires = getUnixTime(new Date().getTime() + 3 * 60 * 1000);
+    const OTPExpires = getUnixTime(new Date().getTime() + 3 * 60 * 1000); //Expires 3 minutes
     const newUser = await User.create(
         {
             email: req.body.email,
@@ -193,6 +192,7 @@ exports.protect = catchAsync(async (req, res, next) => {
     }
     //provide currentUser to next action
     req.user = currentUser;
-
     next();
 });
+
+const getOTP = catchAsync(async (req, res, next) => {});

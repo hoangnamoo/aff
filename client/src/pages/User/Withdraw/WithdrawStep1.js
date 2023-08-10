@@ -5,7 +5,6 @@ import Select from 'react-select';
 
 function WithdrawStep1({ setStep, setRequestInfo }) {
     const cash = 999999;
-    const cashConvert = new Intl.NumberFormat();
 
     const [isLoading, setIsLoading] = useState(false);
     const [input, setInput] = useState({
@@ -16,7 +15,8 @@ function WithdrawStep1({ setStep, setRequestInfo }) {
         },
         amount: {
             name: 'amount',
-            type: 'number',
+            typeOf: 'number',
+            type: 'text',
             placeholder: 'Số tiền rút',
             validate: true,
             value: '',
@@ -32,7 +32,8 @@ function WithdrawStep1({ setStep, setRequestInfo }) {
         },
         accountNumber: {
             name: 'accountNumber',
-            type: 'number',
+            typeOf: 'number',
+            type: 'text',
             placeholder: 'Số tài khoản',
             validate: true,
             value: '',
@@ -40,16 +41,23 @@ function WithdrawStep1({ setStep, setRequestInfo }) {
         },
     });
 
-    const handleInput = (e) => {
+    const handleInput = (e, kindOf) => {
         const name = e.target.name;
-        const value = e.target.value;
-
+        const value =
+            kindOf === 'number'
+                ? e.target.value.replace(/[^0-9]/g, '')
+                : e.target.value;
         if (name === 'amount') {
+            const amountValue = value * 1 < cash ? value : cash;
             return setInput((prev) => ({
                 ...prev,
                 [e.target.name]: {
                     ...prev[name],
-                    value: value * 1 < cash ? value : cash,
+                    value: amountValue
+                        ? parseFloat(amountValue).toLocaleString('vi-VN', {
+                              useGrouping: true,
+                          })
+                        : '',
                     validate: true,
                 },
             }));
@@ -96,7 +104,9 @@ function WithdrawStep1({ setStep, setRequestInfo }) {
                     ...prev,
                     [type]: {
                         ...prev[type],
-                        validate: !isNaN(value) && value.length > 0,
+                        validate:
+                            parseFloat(value.replace(/[^\d.-]/g, '')) &&
+                            value.length > 0,
                     },
                 }));
                 break;
@@ -156,7 +166,7 @@ function WithdrawStep1({ setStep, setRequestInfo }) {
                 <div className="flex flex-col items-center justify-start flex-1 text-slate-900">
                     <span className="text-sm">SỐ DƯ</span>
                     <span className="px-4 py-2 text-2xl font-semibold flex justify-center items-center gap-1">
-                        {`${cashConvert.format(cash)}`}
+                        {`${parseFloat(cash).toLocaleString('vi-VN')}`}
                         <span className="text-base flex items-end">đ</span>
                     </span>
                 </div>
@@ -167,7 +177,9 @@ function WithdrawStep1({ setStep, setRequestInfo }) {
                                 <input
                                     onBlur={handleBlur}
                                     value={input[el].value}
-                                    onChange={handleInput}
+                                    onChange={(e) =>
+                                        handleInput(e, input[el].typeOf)
+                                    }
                                     name={input[el].name}
                                     type={input[el].type}
                                     placeholder={input[el].placeholder}

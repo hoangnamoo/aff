@@ -1,5 +1,3 @@
-import { faPaperPlane } from '@fortawesome/free-regular-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import OtpInput from '../../../components/OtpInput';
 import { useSelector } from 'react-redux';
@@ -39,13 +37,7 @@ function WithdrawStep2({ requestInfo }) {
                     </div>
                 </div>
                 <div className="flex flex-col justify-center items-center gap-4">
-                    <span className="flex justify-center items-center">
-                        <FontAwesomeIcon
-                            className="border p-4 text-2xl rounded-lg"
-                            icon={faPaperPlane}
-                        />
-                    </span>
-                    <div className="flex flex-col gap-2 justify-center items-center">
+                    <div className="flex flex-col gap-2 justify-center items-center text-center">
                         <span className="text-2xl font-semibold">
                             Xác thực rút tiền
                         </span>
