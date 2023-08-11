@@ -61,11 +61,11 @@ module.exports = DB.define(
             defaultValue: 'user',
         },
         cash: {
-            type: DataTypes.DECIMAL(10, 0),
+            type: DataTypes.INTEGER,
             defaultValue: 0,
         },
         pendingCash: {
-            type: DataTypes.DECIMAL(10, 0),
+            type: DataTypes.INTEGER,
             defaultValue: 0,
         },
         avatar: {

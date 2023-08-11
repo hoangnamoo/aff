@@ -37,7 +37,7 @@ function UserMenuMobi({ isOpen }) {
         },
         {
             title: 'Đơn hàng',
-            path: 'signup',
+            path: 'order',
             icon: (
                 <FontAwesomeIcon
                     className="pointer-events-none"

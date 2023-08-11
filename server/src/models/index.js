@@ -1,9 +1,12 @@
 const DB = require('../configs/dbConfig');
+const Bank = require('./Bank');
 const Campaign = require('./Campaign');
 const Conversion = require('./Conversion');
 const Item = require('./Item');
 const Order = require('./Order');
+const Payment = require('./Payment');
 const User = require('./User');
+
 //Setup Relationship
 Campaign.hasMany(Conversion, {
     foreignKey: 'campId',
@@ -23,6 +26,10 @@ Order.hasMany(Item, {
     onUpdate: 'CASCADE',
 });
 
+User.hasMany(Payment, {
+    foreignKey: 'userId',
+});
+
 Conversion.belongsTo(Campaign, {
     foreignKey: 'campId',
 });
@@ -31,6 +38,19 @@ Order.belongsTo(Conversion, {
 });
 Item.belongsTo(Order, {
     foreignKey: 'orderId',
+});
+Payment.belongsTo(User, {
+    foreignKey: 'userId',
+});
+
+Payment.belongsTo(User, {
+    foreignKey: 'userId',
+});
+Payment.belongsTo(User, {
+    foreignKey: 'adminProcessId',
+});
+Payment.belongsTo(Bank, {
+    foreignKey: 'bankId',
 });
 
 //Midleware

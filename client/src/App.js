@@ -7,6 +7,7 @@ import { useDispatch } from 'react-redux';
 import { getUserInfoByToken } from './store/authSlice';
 import Withdraw from './pages/User/Withdraw';
 import WithdrawHistory from './pages/User/WithdrawHistory';
+import Order from './pages/User/Order';
 
 function App() {
     const dispatch = useDispatch();
@@ -29,6 +30,10 @@ function App() {
             path: '/login',
             element: <Login />,
             loader: Login.loader,
+        },
+        {
+            path: '/order',
+            element: <Order />,
         },
         {
             path: '/withdraw',
